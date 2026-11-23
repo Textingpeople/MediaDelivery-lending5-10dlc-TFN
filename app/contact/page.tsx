@@ -4,6 +4,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
+import { NO_SHARING } from '../lib/legal';
+
+const inputStyle = {
+  background: 'rgba(15,37,53,0.04)',
+  border: '1px solid rgba(15,37,53,0.2)',
+  color: 'var(--charcoal)',
+  outline: 'none',
+  fontFamily: 'Inter, sans-serif',
+};
+
+const labelStyle = { color: 'var(--olive)', fontSize: '0.6rem' };
+const infoLabelStyle = { color: 'rgba(15,37,53,0.7)', fontSize: '0.6rem' };
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -25,21 +37,18 @@ export default function ContactPage() {
       <Nav />
 
       {/* ── HERO ── */}
-      <section
-        className="pt-40 pb-20 px-6"
-        style={{ background: 'var(--forest)' }}
-      >
+      <section className="pt-40 pb-20 px-6" style={{ background: 'var(--forest)' }}>
         <div className="max-w-4xl mx-auto">
-          <p className="font-mono-label mb-6" style={{ color: 'rgba(245,243,235,0.45)', fontSize: '0.65rem' }}>
+          <p className="font-mono-label mb-6" style={{ color: 'rgba(240,248,250,0.75)', fontSize: '0.65rem' }}>
             Contact
           </p>
           <h1 className="headline-xl text-white mb-6" style={{ maxWidth: '560px' }}>
-            We&apos;re here
+            Questions about
             <br />
-            <em className="italic-accent">to help.</em>
+            <em className="italic-accent">Balanced Pathway?</em>
           </h1>
-          <p style={{ color: 'rgba(245,243,235,0.6)', fontSize: '1rem', lineHeight: 1.8, maxWidth: '400px' }}>
-            Reach out with any questions, concerns, or feedback. We respond within one to two business days.
+          <p style={{ color: 'rgba(240,248,250,0.85)', fontSize: '1rem', lineHeight: 1.8, maxWidth: '420px' }}>
+            Send us a note about your account, your text reminders or your privacy. We reply within one to two business days.
           </p>
         </div>
       </section>
@@ -58,11 +67,11 @@ export default function ContactPage() {
               {submitted ? (
                 <div
                   className="rounded-2xl p-10 text-center"
-                  style={{ background: 'rgba(72,82,56,0.08)', border: '1px solid rgba(72,82,56,0.15)' }}
+                  style={{ background: 'rgba(26,122,138,0.08)', border: '1px solid rgba(26,122,138,0.2)' }}
                 >
                   <div
                     className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5"
-                    style={{ background: 'rgba(72,82,56,0.12)' }}
+                    style={{ background: 'rgba(26,122,138,0.15)' }}
                   >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--olive)" strokeWidth="2">
                       <path d="M5 13l4 4L19 7" />
@@ -71,17 +80,14 @@ export default function ContactPage() {
                   <h3 className="font-serif mb-3" style={{ fontSize: '1.4rem', color: 'var(--forest)' }}>
                     Message sent.
                   </h3>
-                  <p style={{ color: 'rgba(24,37,27,0.55)', fontSize: '0.9rem', lineHeight: 1.7 }}>
-                    Thank you for reaching out. We&apos;ll get back to you within 1–2 business days.
+                  <p style={{ color: 'rgba(15,37,53,0.75)', fontSize: '0.9rem', lineHeight: 1.7 }}>
+                    Thank you for reaching out. We&apos;ll reply within 1–2 business days.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Name */}
                   <div>
-                    <label className="font-mono-label block mb-2" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>
-                      Full Name *
-                    </label>
+                    <label className="font-mono-label block mb-2" style={labelStyle}>Full Name *</label>
                     <input
                       type="text"
                       name="name"
@@ -90,21 +96,12 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="Jane Smith"
                       className="w-full px-4 py-3 rounded-xl text-sm"
-                      style={{
-                        background: 'rgba(24,37,27,0.04)',
-                        border: '1px solid rgba(24,37,27,0.12)',
-                        color: 'var(--charcoal)',
-                        outline: 'none',
-                        fontFamily: 'Inter, sans-serif',
-                      }}
+                      style={inputStyle}
                     />
                   </div>
 
-                  {/* Email */}
                   <div>
-                    <label className="font-mono-label block mb-2" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>
-                      Email Address *
-                    </label>
+                    <label className="font-mono-label block mb-2" style={labelStyle}>Email Address *</label>
                     <input
                       type="email"
                       name="email"
@@ -113,34 +110,19 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="jane@example.com"
                       className="w-full px-4 py-3 rounded-xl text-sm"
-                      style={{
-                        background: 'rgba(24,37,27,0.04)',
-                        border: '1px solid rgba(24,37,27,0.12)',
-                        color: 'var(--charcoal)',
-                        outline: 'none',
-                        fontFamily: 'Inter, sans-serif',
-                      }}
+                      style={inputStyle}
                     />
                   </div>
 
-                  {/* Subject */}
                   <div>
-                    <label className="font-mono-label block mb-2" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>
-                      Subject *
-                    </label>
+                    <label className="font-mono-label block mb-2" style={labelStyle}>Subject *</label>
                     <select
                       name="subject"
                       required
                       value={formData.subject}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl text-sm"
-                      style={{
-                        background: 'rgba(24,37,27,0.04)',
-                        border: '1px solid rgba(24,37,27,0.12)',
-                        color: formData.subject ? 'var(--charcoal)' : 'rgba(24,37,27,0.35)',
-                        outline: 'none',
-                        fontFamily: 'Inter, sans-serif',
-                      }}
+                      style={{ ...inputStyle, color: formData.subject ? 'var(--charcoal)' : 'rgba(15,37,53,0.6)' }}
                     >
                       <option value="" disabled>Select a topic…</option>
                       <option value="general">General Inquiry</option>
@@ -151,11 +133,8 @@ export default function ContactPage() {
                     </select>
                   </div>
 
-                  {/* Message */}
                   <div>
-                    <label className="font-mono-label block mb-2" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>
-                      Message *
-                    </label>
+                    <label className="font-mono-label block mb-2" style={labelStyle}>Message *</label>
                     <textarea
                       name="message"
                       required
@@ -164,13 +143,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="How can we help you?"
                       className="w-full px-4 py-3 rounded-xl text-sm resize-none"
-                      style={{
-                        background: 'rgba(24,37,27,0.04)',
-                        border: '1px solid rgba(24,37,27,0.12)',
-                        color: 'var(--charcoal)',
-                        outline: 'none',
-                        fontFamily: 'Inter, sans-serif',
-                      }}
+                      style={inputStyle}
                     />
                   </div>
 
@@ -200,48 +173,40 @@ export default function ContactPage() {
               <div className="space-y-8">
                 {/* Email */}
                 <div>
-                  <p className="font-mono-label mb-2" style={{ color: 'rgba(24,37,27,0.35)', fontSize: '0.6rem' }}>
-                    Email
-                  </p>
+                  <p className="font-mono-label mb-2" style={infoLabelStyle}>Email</p>
                   <a
-                    href="mailto:support@verdantfinance.com"
+                    href="mailto:support@thebalancedpathways.com"
                     style={{ color: 'var(--forest)', fontWeight: 600, fontSize: '0.95rem' }}
                   >
-                    support@verdantfinance.com
+                    support@thebalancedpathways.com
                   </a>
-                  <p style={{ color: 'rgba(24,37,27,0.45)', fontSize: '0.82rem', marginTop: '0.3rem' }}>
+                  <p style={{ color: 'rgba(15,37,53,0.75)', fontSize: '0.82rem', marginTop: '0.3rem' }}>
                     Response within 1–2 business days
                   </p>
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <p className="font-mono-label mb-2" style={{ color: 'rgba(24,37,27,0.35)', fontSize: '0.6rem' }}>
-                    Phone
-                  </p>
+                  <p className="font-mono-label mb-2" style={infoLabelStyle}>Phone</p>
                   <a
-                    href="tel:+18005551234"
+                    href="tel:+19083998307"
                     style={{ color: 'var(--forest)', fontWeight: 600, fontSize: '0.95rem' }}
                   >
-                    (800) 555-1234
+                    (908) 399-8307
                   </a>
                 </div>
 
                 {/* Address */}
                 <div>
-                  <p className="font-mono-label mb-2" style={{ color: 'rgba(24,37,27,0.35)', fontSize: '0.6rem' }}>
-                    Address
-                  </p>
+                  <p className="font-mono-label mb-2" style={infoLabelStyle}>Address</p>
                   <p style={{ color: 'var(--charcoal)', fontSize: '0.9rem', lineHeight: 1.6 }}>
-                    1200 Financial Way Ste 400<br />Austin, TX 78701<br />United States
+                    Media Delivery Solutions LLC<br />9 Johnston Dr<br />Bloomsbury, NJ 08804<br />United States
                   </p>
                 </div>
 
                 {/* SMS Support */}
                 <div>
-                  <p className="font-mono-label mb-2" style={{ color: 'rgba(24,37,27,0.35)', fontSize: '0.6rem' }}>
-                    SMS Support
-                  </p>
+                  <p className="font-mono-label mb-2" style={infoLabelStyle}>SMS Support</p>
                   <p style={{ color: 'var(--charcoal)', fontSize: '0.9rem', lineHeight: 1.7 }}>
                     Reply <strong>STOP</strong> to opt out of messages.
                     <br />
@@ -251,31 +216,33 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                {/* Divider */}
-                <div style={{ borderTop: '1px solid rgba(24,37,27,0.1)', paddingTop: '2rem' }}>
-                  <p className="font-mono-label mb-4" style={{ color: 'rgba(24,37,27,0.35)', fontSize: '0.6rem' }}>
-                    FAQ
-                  </p>
+                {/* FAQ */}
+                <div style={{ borderTop: '1px solid rgba(15,37,53,0.15)', paddingTop: '2rem' }}>
+                  <p className="font-mono-label mb-4" style={infoLabelStyle}>FAQ</p>
                   <div className="space-y-5">
                     {[
                       {
-                        q: 'How do I opt out of SMS?',
-                        a: 'Reply STOP to any message. You\'ll be removed immediately.',
+                        q: 'How do I stop text reminders?',
+                        a: 'Reply STOP to any text. You will get one confirmation and no more messages. Reply START to re-subscribe.',
                       },
                       {
                         q: 'Will my information be shared?',
-                        a: 'No. We do not sell or share your mobile number with third parties for marketing.',
+                        a: NO_SHARING,
                       },
                       {
-                        q: 'How do I request my data?',
-                        a: 'Select "Privacy / Data Request" in the form and we\'ll respond within 5 business days.',
+                        q: 'Who can see my budget and goals?',
+                        a: 'Only you. Employers see anonymous, aggregate usage trends, never individual budgets or goals.',
+                      },
+                      {
+                        q: 'How do I request or delete my data?',
+                        a: 'Choose "Privacy / Data Request" in the form and we will reply within 5 business days.',
                       },
                     ].map((item, i) => (
                       <div key={i}>
                         <p style={{ fontWeight: 600, color: 'var(--forest)', fontSize: '0.88rem', marginBottom: '0.3rem' }}>
                           {item.q}
                         </p>
-                        <p style={{ color: 'rgba(24,37,27,0.55)', fontSize: '0.82rem', lineHeight: 1.6 }}>
+                        <p style={{ color: 'rgba(15,37,53,0.8)', fontSize: '0.82rem', lineHeight: 1.6 }}>
                           {item.a}{' '}
                           {i === 1 && (
                             <Link href="/privacy" style={{ color: 'var(--olive)', textDecoration: 'underline' }}>

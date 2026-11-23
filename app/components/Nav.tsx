@@ -18,9 +18,9 @@ export default function Nav() {
       <nav
         className="w-full max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"
         style={{
-          background: scrolled ? 'rgba(10,26,38,0.95)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : 'none',
+          background: scrolled ? 'rgba(10,26,38,0.97)' : 'rgba(10,26,38,0.88)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
           transition: 'background 0.3s ease, border-color 0.3s ease',
           borderRadius: scrolled ? '0' : '0',
         }}
@@ -51,7 +51,7 @@ export default function Nav() {
               letterSpacing: '-0.01em',
             }}
           >
-            Balance Path
+            Balanced Pathway
           </span>
         </Link>
 
@@ -66,13 +66,13 @@ export default function Nav() {
               key={item.href}
               href={item.href}
               style={{
-                color: 'rgba(255,255,255,0.75)',
+                color: 'rgba(255,255,255,0.85)',
                 fontSize: '0.875rem',
                 fontWeight: 500,
                 transition: 'color 0.2s',
               }}
               onMouseEnter={e => { e.currentTarget.style.color = 'white'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.75)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.85)'; }}
             >
               {item.label}
             </Link>

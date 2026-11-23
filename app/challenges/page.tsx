@@ -3,195 +3,207 @@ import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import Link from 'next/link';
 
-function ProgressBar({ pct, color }: { pct: number; color: string }) {
+function ProgressBar({ pct, color = '#1A7A8A' }: { pct: number; color?: string }) {
   return (
-    <div className="w-full bg-gray-100 rounded-full h-2">
+    <div className="w-full rounded-full h-2" style={{ background: 'rgba(15,37,53,0.1)' }}>
       <div className="h-2 rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
     </div>
   );
 }
 
+const iconProps = { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', stroke: '#0F2535', strokeWidth: 1.5 };
+
 export default function ChallengesPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] blob opacity-30"
-          style={{ background: 'radial-gradient(circle, rgba(134,239,172,0.4) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-[10%] right-[-5%] w-[400px] h-[400px] blob opacity-25"
-          style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.3) 0%, transparent 70%)' }} />
-      </div>
-
+    <div className="min-h-screen" style={{ background: 'var(--ivory)', color: 'var(--charcoal)' }}>
       <Nav />
 
-      <section className="pt-32 pb-20 px-6 relative text-center" style={{ zIndex: 1 }}>
+      {/* Hero */}
+      <section className="pt-40 pb-20 px-6 text-center" style={{ background: 'var(--forest)' }}>
         <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-orange-700 mb-8"
-            style={{ background: 'rgba(251,146,60,0.15)', border: '1px solid rgba(251,146,60,0.3)' }}>
-            <span>🏆</span>
-            Wellness Challenges
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8"
+            style={{ background: 'rgba(75,191,212,0.15)', border: '1px solid rgba(75,191,212,0.35)', color: '#FFFFFF' }}
+          >
+            Optional and self-paced
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 tracking-tight mb-6">
-            Turn everyday movement into
-            <br /><span className="gradient-text-green">something your team does together.</span>
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6" style={{ color: '#FFFFFF' }}>
+            Budget Challenges
+            <br />
+            <span style={{ color: '#4BBFD4' }}>one small habit at a time.</span>
           </h1>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            Team Cross Fit challenges connect to real activity data from employees&apos; health apps — so participation is automatic, not manual. No logging. No guessing. Just real wellness.
+          <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(240,248,250,0.85)' }}>
+            Each month, employees can join a short challenge that builds a budgeting habit. Everyone works from their own entries, at their own pace, and nothing is shared with other employees.
           </p>
         </div>
       </section>
 
       {/* Challenge types */}
-      <section className="py-20 px-6 relative" style={{ zIndex: 1 }}>
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 tracking-tight mb-4">
-              Four types of challenges.
+            <h2 className="text-4xl font-bold tracking-tight mb-4" style={{ color: 'var(--forest)' }}>
+              Four kinds of challenges.
             </h2>
-            <p className="text-lg text-gray-500">
-              Each designed to drive real participation and healthy habits.
+            <p className="text-lg" style={{ color: 'rgba(15,37,53,0.75)' }}>
+              Each one is a simple routine you can start any time.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
 
-            {/* Step Challenges */}
-            <div className="glass-card p-8">
+            {/* 30-Day Spending Tracker */}
+            <div className="card-ivory p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
-                  style={{ background: 'rgba(22,163,74,0.12)' }}>👟</div>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--olive-light)' }}>
+                  <svg {...iconProps}>
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Step Challenges</h3>
-                  <p className="text-sm text-gray-400">Daily, weekly, or monthly goals</p>
+                  <h3 className="text-xl font-bold" style={{ color: 'var(--forest)' }}>30-Day Spending Tracker</h3>
+                  <p className="text-sm" style={{ color: 'rgba(15,37,53,0.7)' }}>Log your spending for a month</p>
                 </div>
               </div>
-              <p className="text-gray-500 mb-6">
-                Set daily or cumulative step targets. Steps sync automatically from Apple Health and compatible devices. Employees see their progress in real time.
+              <p className="mb-6" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                Enter what you spend each day for 30 days and watch your categories fill in. By the end, you have a clear picture to build next month&apos;s plan from.
               </p>
-              <div className="p-5 rounded-2xl mb-4" style={{ background: 'rgba(0,0,0,0.03)' }}>
+              <div className="p-5 rounded-2xl mb-4" style={{ background: 'rgba(15,37,53,0.04)' }}>
                 <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm font-semibold text-gray-900">10K Step Challenge</p>
-                  <span className="text-xs font-bold text-green-600">+100 pts</span>
+                  <p className="text-sm font-semibold" style={{ color: 'var(--forest)' }}>Sample tracker</p>
+                  <span className="text-xs font-bold" style={{ color: 'var(--olive)' }}>Day 18 of 30</span>
                 </div>
-                <p className="text-xs text-gray-400 mb-3">8,462 / 10,000 steps today</p>
-                <ProgressBar pct={84} color="#16a34a" />
-                <p className="text-xs text-gray-400 mt-1">84% complete</p>
+                <p className="text-xs mb-3" style={{ color: 'rgba(15,37,53,0.7)' }}>18 days of entries logged</p>
+                <ProgressBar pct={60} />
+                <p className="text-xs mt-1" style={{ color: 'rgba(15,37,53,0.7)' }}>60% of the way through</p>
               </div>
               <ul className="space-y-2">
-                {['Daily 10K step goals', 'Weekly cumulative targets', 'Monthly step totals', 'Automatic sync from Apple Health'].map(f => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                {['A daily entry habit', 'Works with your own categories', 'Skip a day and pick back up', 'Ends with a summary of your entries'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-sm" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--olive)' }} />
                     {f}
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Movement Streaks */}
-            <div className="glass-card p-8">
+            {/* First-Goal Kickoff */}
+            <div className="card-ivory p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
-                  style={{ background: 'rgba(249,115,22,0.12)' }}>🔥</div>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--olive-light)' }}>
+                  <svg {...iconProps}>
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="6" />
+                    <circle cx="12" cy="12" r="2" />
+                  </svg>
+                </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Movement Streaks</h3>
-                  <p className="text-sm text-gray-400">Consistency over time</p>
+                  <h3 className="text-xl font-bold" style={{ color: 'var(--forest)' }}>First-Goal Kickoff</h3>
+                  <p className="text-sm" style={{ color: 'rgba(15,37,53,0.7)' }}>Start your first money goal</p>
                 </div>
               </div>
-              <p className="text-gray-500 mb-6">
-                Reward consistent activity over multiple days. Streaks build habits and keep employees engaged week after week — not just during a single challenge.
+              <p className="mb-6" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                A guided first week for anyone new to goals. Pick something that matters to you, set a target and record your starting point.
               </p>
-              <div className="p-5 rounded-2xl mb-4" style={{ background: 'rgba(0,0,0,0.03)' }}>
+              <div className="p-5 rounded-2xl mb-4" style={{ background: 'rgba(15,37,53,0.04)' }}>
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-sm font-semibold text-gray-900">5-Day Movement Streak</p>
-                  <span className="text-xs font-bold text-orange-600">+250 pts</span>
+                  <p className="text-sm font-semibold" style={{ color: 'var(--forest)' }}>Vacation goal</p>
+                  <span className="text-xs font-bold" style={{ color: 'var(--olive)' }}>40% of target</span>
                 </div>
-                <div className="flex gap-2">
-                  {[1,2,3,4,5].map(d => (
-                    <div key={d} className={`flex-1 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${d <= 4 ? 'text-white' : 'text-gray-300'}`}
-                      style={{ background: d <= 4 ? 'linear-gradient(135deg, #f97316, #ef4444)' : 'rgba(0,0,0,0.05)' }}>
-                      {d <= 4 ? '✓' : d}
+                <ProgressBar pct={40} />
+                <p className="text-xs mt-2" style={{ color: 'rgba(15,37,53,0.7)' }}>Sample goal, updated by the employee</p>
+              </div>
+              <ul className="space-y-2">
+                {['Choose a goal in your own words', 'Set a target and a date', 'Record where you are today', 'Schedule a progress reminder'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-sm" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--olive)' }} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Category Cleanup Week */}
+            <div className="card-ivory p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--olive-light)' }}>
+                  <svg {...iconProps}>
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                    <line x1="7" y1="7" x2="7.01" y2="7" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold" style={{ color: 'var(--forest)' }}>Category Cleanup Week</h3>
+                  <p className="text-sm" style={{ color: 'rgba(15,37,53,0.7)' }}>Tidy up your budget</p>
+                </div>
+              </div>
+              <p className="mb-6" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                Spend one week making your categories fit your real life. Merge the ones you rarely use, rename the confusing ones and add what is missing.
+              </p>
+              <div className="p-5 rounded-2xl mb-4" style={{ background: 'rgba(15,37,53,0.04)' }}>
+                <p className="text-sm font-semibold mb-3" style={{ color: 'var(--forest)' }}>Sample checklist</p>
+                <div className="grid grid-cols-1 gap-2">
+                  {[
+                    { label: 'Rename "Misc" to something specific', done: true },
+                    { label: 'Merge two similar categories', done: true },
+                    { label: 'Add a category for gifts', done: false },
+                  ].map(item => (
+                    <div key={item.label} className="flex items-center gap-2 text-xs" style={{ color: 'rgba(15,37,53,0.85)' }}>
+                      <div
+                        className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0"
+                        style={{ background: item.done ? 'var(--olive)' : 'rgba(15,37,53,0.12)' }}
+                      >
+                        {item.done && (
+                          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="3">
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      {item.label}
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-gray-400 mt-2">4 of 5 days complete</p>
               </div>
               <ul className="space-y-2">
-                {['Daily movement targets', 'Multi-day streak tracking', 'Streak protection options', 'Bonus points for long streaks'].map(f => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                {['Review every category once', 'Rename, merge or remove', 'Add categories you need', 'Finish with a fresh plan'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-sm" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--olive)' }} />
                     {f}
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Team Challenges */}
-            <div className="glass-card p-8">
+            {/* Holiday Budget Plan */}
+            <div className="card-ivory p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
-                  style={{ background: 'rgba(8,145,178,0.12)' }}>👥</div>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--olive-light)' }}>
+                  <svg {...iconProps}>
+                    <rect x="3" y="8" width="18" height="13" rx="1" />
+                    <path d="M12 8v13M3 12h18M12 8c-2-4-6-3-5 0M12 8c2-4 6-3 5 0" />
+                  </svg>
+                </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Team Challenges</h3>
-                  <p className="text-sm text-gray-400">Compete together</p>
+                  <h3 className="text-xl font-bold" style={{ color: 'var(--forest)' }}>Holiday Budget Plan</h3>
+                  <p className="text-sm" style={{ color: 'rgba(15,37,53,0.7)' }}>Plan seasonal spending ahead</p>
                 </div>
               </div>
-              <p className="text-gray-500 mb-6">
-                Pit departments, locations, or custom teams against each other. Team challenges build camaraderie and drive higher participation than individual challenges alone.
+              <p className="mb-6" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                Map out gifts, travel and gatherings before the season starts, then track your own entries against the plan as it unfolds.
               </p>
-              <div className="p-5 rounded-2xl mb-4 space-y-3" style={{ background: 'rgba(0,0,0,0.03)' }}>
-                <p className="text-sm font-semibold text-gray-900 mb-2">Team Step Challenge</p>
-                {[
-                  { name: '🥇 Product', steps: '1,284,430', pct: 100, color: '#16a34a' },
-                  { name: '🥈 Sales', steps: '1,201,220', pct: 94, color: '#0891b2' },
-                  { name: '🥉 Marketing', steps: '1,089,440', pct: 85, color: '#7c3aed' },
-                ].map(t => (
-                  <div key={t.name}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="font-medium text-gray-700">{t.name}</span>
-                      <span className="text-gray-400">{t.steps}</span>
-                    </div>
-                    <ProgressBar pct={t.pct} color={t.color} />
-                  </div>
-                ))}
+              <div className="p-5 rounded-2xl mb-4" style={{ background: 'rgba(15,37,53,0.04)' }}>
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm font-semibold" style={{ color: 'var(--forest)' }}>Gifts — planned vs. spent</p>
+                  <span className="text-xs font-bold" style={{ color: 'var(--olive)' }}>$120 of $200</span>
+                </div>
+                <ProgressBar pct={60} />
+                <p className="text-xs mt-1" style={{ color: 'rgba(15,37,53,0.7)' }}>Sample entries added by the employee</p>
               </div>
               <ul className="space-y-2">
-                {['Department vs. department', 'Custom team groupings', 'Real-time leaderboards', 'Team aggregate tracking'].map(f => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Wellness Goals */}
-            <div className="glass-card p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
-                  style={{ background: 'rgba(124,58,237,0.12)' }}>🌿</div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Wellness Goals</h3>
-                  <p className="text-sm text-gray-400">Monthly programs</p>
-                </div>
-              </div>
-              <p className="text-gray-500 mb-6">
-                Longer-form wellness programs that reward employees for completing a set number of wellness activities over a month. Flexible and inclusive by design.
-              </p>
-              <div className="p-5 rounded-2xl mb-4" style={{ background: 'rgba(0,0,0,0.03)' }}>
-                <div className="flex justify-between items-center mb-3">
-                  <p className="text-sm font-semibold text-gray-900">Wellness Month</p>
-                  <span className="text-xs font-bold text-purple-600">+500 pts</span>
-                </div>
-                <div className="grid grid-cols-5 gap-1.5 mb-2">
-                  {Array.from({ length: 15 }).map((_, i) => (
-                    <div key={i} className={`h-6 rounded-md ${i < 11 ? 'bg-purple-400' : 'bg-gray-100'}`} />
-                  ))}
-                </div>
-                <p className="text-xs text-gray-400">11 of 15 activities complete</p>
-              </div>
-              <ul className="space-y-2">
-                {['Monthly activity targets', 'Multiple activity types count', 'Flexible completion windows', 'Inclusive for all fitness levels'].map(f => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                {['Gifts, travel and gatherings', 'Your own planned amounts', 'Update as you spend', 'Review it once the season ends'].map(f => (
+                  <li key={f} className="flex items-center gap-2 text-sm" style={{ color: 'rgba(15,37,53,0.8)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--olive)' }} />
                     {f}
                   </li>
                 ))}
@@ -202,81 +214,75 @@ export default function ChallengesPage() {
       </section>
 
       {/* How challenges work */}
-      <section className="py-20 px-6 relative" style={{ zIndex: 1 }}>
+      <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 tracking-tight mb-4">
-              Challenges that run themselves.
+            <h2 className="text-4xl font-bold tracking-tight mb-4" style={{ color: 'var(--forest)' }}>
+              Challenges that stay personal.
             </h2>
-            <p className="text-lg text-gray-500">
-              HR teams launch challenges. Employees participate. Activity syncs automatically.
+            <p className="text-lg" style={{ color: 'rgba(15,37,53,0.75)' }}>
+              Join if you like. Work at your pace. Keep your numbers to yourself.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-6">
               {[
-                { icon: '⚡', title: 'Automatic activity tracking', desc: 'Steps, workouts, and movement sync from Apple Health automatically. Employees don\'t need to log anything manually.' },
-                { icon: '📊', title: 'Real-time progress', desc: 'Employees see their challenge progress update throughout the day as activity is recorded.' },
-                { icon: '🏆', title: 'Instant rewards', desc: 'When a challenge is completed, points are awarded automatically. No manual review required.' },
-                { icon: '🔔', title: 'Encouragement & milestones', desc: 'Employees receive notifications when they hit milestones, complete challenges, or build streaks.' },
+                { title: 'Opt in each month', desc: 'A new Budget Challenge is offered every month. Join the ones that suit you and skip the rest.' },
+                { title: 'Built on your own entries', desc: 'Progress comes from the numbers you enter. Nothing is pulled in from outside accounts.' },
+                { title: 'No rankings', desc: 'There are no leaderboards or comparisons between employees.' },
+                { title: 'Reminders you choose', desc: 'Get a nudge through your calendar, or by text if you opted in to promotional messages.' },
               ].map(item => (
                 <div key={item.title} className="flex items-start gap-4">
-                  <span className="text-2xl flex-shrink-0">{item.icon}</span>
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'var(--olive-light)' }}>
+                    <div className="w-2 h-2 rounded-full" style={{ background: 'var(--olive)' }} />
+                  </div>
                   <div>
-                    <p className="font-semibold text-gray-900 mb-1">{item.title}</p>
-                    <p className="text-sm text-gray-500">{item.desc}</p>
+                    <p className="font-semibold mb-1" style={{ color: 'var(--forest)' }}>{item.title}</p>
+                    <p className="text-sm" style={{ color: 'rgba(15,37,53,0.75)' }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="glass-card p-6">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-4">Active Challenges</p>
+            <div className="card-ivory p-6">
+              <p className="text-xs uppercase tracking-wider font-medium mb-4" style={{ color: 'var(--olive)' }}>My Challenges</p>
               <div className="space-y-4">
                 {[
-                  { name: '10K Step Challenge', type: 'Daily', progress: 84, pts: '+100 pts', color: '#16a34a', icon: '👟' },
-                  { name: 'Movement Streak', type: '5-day', progress: 80, pts: '+250 pts', color: '#f97316', icon: '🔥' },
-                  { name: 'Team Step Challenge', type: 'Monthly', progress: 71, pts: 'Team', color: '#0891b2', icon: '👥' },
-                  { name: 'Wellness Month', type: '15 activities', progress: 73, pts: '+500 pts', color: '#7c3aed', icon: '🌿' },
+                  { name: '30-Day Spending Tracker', type: 'In progress', progress: 60 },
+                  { name: 'First-Goal Kickoff', type: 'In progress', progress: 40 },
+                  { name: 'Category Cleanup Week', type: 'In progress', progress: 66 },
+                  { name: 'Holiday Budget Plan', type: 'Not started', progress: 0 },
                 ].map(c => (
-                  <div key={c.name} className="p-4 rounded-2xl" style={{ background: 'rgba(0,0,0,0.03)' }}>
+                  <div key={c.name} className="p-4 rounded-2xl" style={{ background: 'rgba(15,37,53,0.04)' }}>
                     <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span>{c.icon}</span>
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">{c.name}</p>
-                          <p className="text-xs text-gray-400">{c.type}</p>
-                        </div>
+                      <div>
+                        <p className="text-sm font-semibold" style={{ color: 'var(--forest)' }}>{c.name}</p>
+                        <p className="text-xs" style={{ color: 'rgba(15,37,53,0.7)' }}>{c.type}</p>
                       </div>
-                      <span className="text-xs font-bold" style={{ color: c.color }}>{c.pts}</span>
+                      <span className="text-xs font-bold" style={{ color: 'var(--olive)' }}>{c.progress}%</span>
                     </div>
-                    <ProgressBar pct={c.progress} color={c.color} />
-                    <p className="text-xs text-gray-400 mt-1">{c.progress}% complete</p>
+                    <ProgressBar pct={c.progress} />
                   </div>
                 ))}
               </div>
+              <p className="text-xs mt-4 text-center" style={{ color: 'rgba(15,37,53,0.7)' }}>Sample screen with sample entries</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 relative" style={{ zIndex: 1 }}>
+      <section className="py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Ready to launch your first challenge?</h2>
-          <p className="text-lg text-gray-500 mb-8">
-            HR teams can set up challenges in minutes. Employees join with a Company ID.
+          <h2 className="text-4xl font-bold mb-4" style={{ color: 'var(--forest)' }}>Ready to try one?</h2>
+          <p className="text-lg mb-8" style={{ color: 'rgba(15,37,53,0.75)' }}>
+            Employees sign up with the Employer ID from their onboarding email. Employers can talk with us about offering Balanced Pathway.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/for-employers"
-              className="px-8 py-4 text-base font-semibold text-white rounded-2xl shadow-xl hover:opacity-90 transition-all"
-              style={{ background: 'linear-gradient(135deg, #16a34a, #059669)' }}>
-              Set Up a Program
-            </Link>
-            <Link href="/talk-to-sales"
-              className="px-8 py-4 text-base font-semibold text-gray-700 rounded-2xl glass-button">
-              Employee Sign Up
+            <Link href="/signup" className="btn-forest">Employee Sign Up</Link>
+            <Link href="/for-employers" className="btn-outline" style={{ color: 'var(--forest)', borderColor: 'rgba(15,37,53,0.35)' }}>
+              For Employers
             </Link>
           </div>
         </div>

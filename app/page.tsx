@@ -1,76 +1,48 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
+import { SOFTWARE_NOTICE } from './lib/legal';
 
-// ─── Animated Counter ──────────────────────────────────────────────────────────
-function Counter({ target, prefix = '', suffix = '' }: { target: number; prefix?: string; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        let start = 0;
-        const step = target / 60;
-        const timer = setInterval(() => {
-          start += step;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else setCount(Math.floor(start));
-        }, 16);
-        observer.disconnect();
-      }
-    }, { threshold: 0.5 });
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [target]);
-  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
-}
-
-// ─── App UI: Dashboard Mockup ──────────────────────────────────────────────────
-function DashboardMockup() {
+// ─── App UI: Budget Mockup ─────────────────────────────────────────────────────
+function BudgetMockup() {
   return (
     <div className="app-card p-6 w-full max-w-sm mx-auto" style={{ fontFamily: 'Inter, sans-serif' }}>
-      {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <p className="font-mono-label" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>Good morning</p>
-          <p style={{ fontWeight: 600, color: 'var(--forest)', fontSize: '1rem' }}>Jordan, here&apos;s your overview</p>
+          <p className="font-mono-label" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>Monthly budget</p>
+          <p style={{ fontWeight: 600, color: 'var(--forest)', fontSize: '1rem' }}>Jordan&apos;s sample budget</p>
         </div>
         <div
           className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold"
-          style={{ background: 'var(--forest)', color: 'var(--ivory)' }}
+          style={{ background: 'var(--forest)', color: '#FFFFFF' }}
         >
           J
         </div>
       </div>
 
-      {/* Net Worth Card */}
-      <div
-        className="rounded-2xl p-4 mb-4"
-        style={{ background: 'var(--forest)', color: 'var(--ivory)' }}
-      >
-        <p className="font-mono-label mb-1" style={{ color: 'rgba(245,243,235,0.5)', fontSize: '0.6rem' }}>Net Worth</p>
-        <p style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em' }}>$48,240</p>
-        <p style={{ color: 'rgba(245,243,235,0.6)', fontSize: '0.75rem', marginTop: '0.25rem' }}>
-          <span style={{ color: '#7EC8A0' }}>↑ $1,240</span> this month
+      <div className="rounded-2xl p-4 mb-4" style={{ background: 'var(--forest)', color: '#FFFFFF' }}>
+        <p className="font-mono-label mb-1" style={{ color: 'rgba(240,248,250,0.75)', fontSize: '0.6rem' }}>Planned vs. spent</p>
+        <p style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em' }}>$670 planned</p>
+        <p style={{ color: 'rgba(240,248,250,0.8)', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+          <span style={{ color: '#4BBFD4' }}>$495 spent</span> so far this month
         </p>
       </div>
 
-      {/* Goals */}
       <div className="space-y-3 mb-4">
         {[
-          { label: 'Emergency Fund', current: 4200, goal: 6000, pct: 70, color: '#485238' },
-          { label: 'Student Loan Payoff', current: 8400, goal: 12000, pct: 70, color: '#18251B' },
-          { label: 'Retirement (401k)', current: 18600, goal: 25000, pct: 74, color: '#485238' },
+          { label: 'Groceries — planned vs. spent', detail: '$312 of $400', pct: 78, color: '#1A7A8A' },
+          { label: 'Transportation — planned vs. spent', detail: '$95 of $150', pct: 63, color: '#0F2535' },
+          { label: 'Dining out — planned vs. spent', detail: '$88 of $120', pct: 73, color: '#1A7A8A' },
         ].map(g => (
           <div key={g.label}>
             <div className="flex justify-between items-center mb-1">
               <span style={{ fontSize: '0.78rem', color: 'var(--charcoal)', fontWeight: 500 }}>{g.label}</span>
-              <span className="font-mono-label" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>{g.pct}%</span>
+              <span className="font-mono-label" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>{g.detail}</span>
             </div>
-            <div className="rounded-full h-1.5" style={{ background: 'rgba(24,37,27,0.1)' }}>
+            <div className="rounded-full h-1.5" style={{ background: 'rgba(15,37,53,0.1)' }}>
               <div
                 className="h-1.5 rounded-full"
                 style={{ width: `${g.pct}%`, background: g.color, transition: 'width 1s ease' }}
@@ -80,89 +52,72 @@ function DashboardMockup() {
         ))}
       </div>
 
-      {/* AI Insight */}
       <div
         className="rounded-xl p-3 flex items-start gap-3"
-        style={{ background: 'rgba(72,82,56,0.1)', border: '1px solid rgba(72,82,56,0.2)' }}
+        style={{ background: 'rgba(26,122,138,0.1)', border: '1px solid rgba(26,122,138,0.25)' }}
       >
         <div
           className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
           style={{ background: 'var(--olive)' }}
         >
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5v6m0 4h.01" />
+            <path d="M12 6v6l4 2" />
+            <circle cx="12" cy="12" r="9" />
           </svg>
         </div>
         <p style={{ fontSize: '0.72rem', color: 'var(--forest)', lineHeight: 1.5 }}>
-          <strong>AI Insight:</strong> You&apos;re on track to fully fund your emergency fund by March. Consider increasing your 401k contribution by 2%.
+          <strong>Budget review: due Friday.</strong> Update your categories and look over the month.
         </p>
       </div>
     </div>
   );
 }
 
-// ─── App UI: AI Chat Mockup ────────────────────────────────────────────────────
-function ChatMockup() {
-  const messages = [
-    { role: 'user', text: 'How much should I have in my emergency fund?' },
-    { role: 'ai', text: 'Based on your monthly expenses of $3,200, a solid emergency fund is 3–6 months of expenses — so $9,600 to $19,200. You currently have $4,200 saved. You\'re 44% of the way to your minimum goal.' },
-    { role: 'user', text: 'What\'s the fastest way to get there?' },
-    { role: 'ai', text: 'Redirecting your $180/month dining budget by 30% would add $54/month. At that rate, you\'d hit $9,600 in about 10 months. Want me to set up an automatic transfer?' },
+// ─── App UI: Goal Tracker Mockup ───────────────────────────────────────────────
+function GoalMockup() {
+  const goals = [
+    { name: 'Vacation goal', note: '40% of target', pct: 40 },
+    { name: 'Down payment goal', note: '15% of target', pct: 15 },
+    { name: 'Pay off a balance goal', note: '60% of target', pct: 60 },
   ];
 
   return (
     <div className="app-card p-5 w-full max-w-sm mx-auto" style={{ fontFamily: 'Inter, sans-serif' }}>
-      {/* Chat header */}
-      <div className="flex items-center gap-3 mb-4 pb-4" style={{ borderBottom: '1px solid rgba(24,37,27,0.08)' }}>
-        <div
-          className="w-8 h-8 rounded-full flex items-center justify-center"
-          style={{ background: 'var(--forest)' }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z" fill="#F5F3EB" opacity="0.9" />
+      <div className="flex items-center gap-3 mb-4 pb-4" style={{ borderBottom: '1px solid rgba(15,37,53,0.1)' }}>
+        <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--forest)' }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2">
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="4" />
           </svg>
         </div>
         <div>
-          <p style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--forest)' }}>Balance AI</p>
-          <div className="flex items-center gap-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-            <p className="font-mono-label" style={{ color: 'var(--olive)', fontSize: '0.55rem' }}>Online</p>
-          </div>
+          <p style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--forest)' }}>My goals</p>
+          <p className="font-mono-label" style={{ color: 'var(--olive)', fontSize: '0.55rem' }}>Updated by you</p>
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="space-y-3 mb-4">
-        {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className="rounded-2xl px-3 py-2 max-w-[85%]"
-              style={{
-                background: msg.role === 'user' ? 'var(--forest)' : 'rgba(72,82,56,0.1)',
-                color: msg.role === 'user' ? 'var(--ivory)' : 'var(--charcoal)',
-                fontSize: '0.72rem',
-                lineHeight: 1.5,
-                borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-              }}
-            >
-              {msg.text}
+      <div className="space-y-4 mb-4">
+        {goals.map(goal => (
+          <div key={goal.name} className="rounded-xl p-3" style={{ background: 'rgba(15,37,53,0.05)' }}>
+            <div className="flex justify-between items-center mb-2">
+              <span style={{ fontSize: '0.8rem', color: 'var(--forest)', fontWeight: 600 }}>{goal.name}</span>
+              <span className="font-mono-label" style={{ color: 'var(--olive)', fontSize: '0.58rem' }}>{goal.note}</span>
+            </div>
+            <div className="rounded-full h-2" style={{ background: 'rgba(15,37,53,0.1)' }}>
+              <div className="h-2 rounded-full" style={{ width: `${goal.pct}%`, background: 'var(--olive)' }} />
             </div>
           </div>
         ))}
       </div>
 
-      {/* Input */}
       <div
         className="flex items-center gap-2 rounded-full px-4 py-2"
-        style={{ background: 'rgba(24,37,27,0.06)', border: '1px solid rgba(24,37,27,0.1)' }}
+        style={{ background: 'rgba(15,37,53,0.06)', border: '1px solid rgba(15,37,53,0.12)' }}
       >
-        <p style={{ fontSize: '0.72rem', color: 'rgba(24,37,27,0.35)', flex: 1 }}>Ask anything about your finances…</p>
-        <div
-          className="w-6 h-6 rounded-full flex items-center justify-center"
-          style={{ background: 'var(--forest)' }}
-        >
+        <p style={{ fontSize: '0.72rem', color: 'rgba(15,37,53,0.7)', flex: 1 }}>Update your goal progress…</p>
+        <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'var(--forest)' }}>
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-            <path d="M5 12h14M12 5l7 7-7 7" />
+            <path d="M12 5v14M5 12h14" />
           </svg>
         </div>
       </div>
@@ -191,7 +146,6 @@ export default function HomePage() {
           overflow: 'hidden',
         }}
       >
-        {/* Animated grid background */}
         <div
           className="absolute inset-0"
           style={{
@@ -203,7 +157,6 @@ export default function HomePage() {
           }}
         />
 
-        {/* Glow orbs */}
         <div
           className="absolute"
           style={{
@@ -227,7 +180,6 @@ export default function HomePage() {
           }}
         />
 
-        {/* Content */}
         <div
           className="relative z-10 w-full max-w-6xl mx-auto px-6 pt-32 pb-20"
           style={{
@@ -237,7 +189,6 @@ export default function HomePage() {
           }}
         >
           <div className="max-w-3xl">
-            {/* Badge */}
             <div
               className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full"
               style={{
@@ -246,12 +197,11 @@ export default function HomePage() {
               }}
             >
               <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4BBFD4' }} />
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontWeight: 500 }}>
-                Personalized Financial Guidance
+              <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.8rem', fontWeight: 500 }}>
+                A budgeting benefit from your employer
               </span>
             </div>
 
-            {/* Headline */}
             <h1
               style={{
                 fontFamily: 'Inter, sans-serif',
@@ -263,30 +213,28 @@ export default function HomePage() {
                 marginBottom: '1.5rem',
               }}
             >
-              Your personal guide
+              Budgeting and goals,
               <br />
-              <span style={{ color: '#4BBFD4' }}>to financial</span>
+              <span style={{ color: '#4BBFD4' }}>made simple</span>
               <br />
-              success.
+              for every employee.
             </h1>
 
-            {/* Subheading */}
             <p
               style={{
-                color: 'rgba(255,255,255,0.6)',
+                color: 'rgba(255,255,255,0.8)',
                 fontSize: '1.15rem',
                 lineHeight: 1.7,
-                maxWidth: '520px',
+                maxWidth: '540px',
                 marginBottom: '2.5rem',
               }}
             >
-              Balance Path pairs your employees with dedicated financial advisors who deliver customized strategies, progress tracking, and real results.
+              Balanced Pathway is software where you build a monthly budget, name your money goals and look back on how the month went — all from the numbers you enter yourself.
             </p>
 
-            {/* CTAs */}
             <div className="flex flex-wrap items-center gap-4">
               <Link
-                href="/talk-to-sales"
+                href="/signup"
                 className="inline-flex items-center gap-2"
                 style={{
                   background: '#1A7A8A',
@@ -300,7 +248,7 @@ export default function HomePage() {
                 onMouseEnter={e => { e.currentTarget.style.background = '#228A9A'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = '#1A7A8A'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
-                Get Started Free
+                Employee Sign Up
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
@@ -309,33 +257,19 @@ export default function HomePage() {
                 href="/for-employers"
                 className="inline-flex items-center gap-2"
                 style={{
-                  color: 'rgba(255,255,255,0.8)',
+                  color: 'rgba(255,255,255,0.9)',
                   fontSize: '0.95rem',
                   fontWeight: 500,
                   padding: '0.875rem 2rem',
                   borderRadius: '10px',
-                  border: '1px solid rgba(255,255,255,0.2)',
+                  border: '1px solid rgba(255,255,255,0.3)',
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
               >
                 For Employers
               </Link>
-            </div>
-
-            {/* Social proof */}
-            <div className="flex items-center gap-6 mt-12">
-              {[
-                { value: '10,000+', label: 'Employees served' },
-                { value: '94%', label: 'Satisfaction rate' },
-                { value: '$2.39', label: 'ROI per $1 invested' },
-              ].map(stat => (
-                <div key={stat.label}>
-                  <p style={{ color: 'white', fontWeight: 700, fontSize: '1.25rem', lineHeight: 1 }}>{stat.value}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.75rem', marginTop: '0.25rem' }}>{stat.label}</p>
-                </div>
-              ))}
             </div>
           </div>
         </div>
@@ -352,41 +286,42 @@ export default function HomePage() {
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                   </svg>
                 ),
-                title: 'Privacy by design',
-                desc: 'Employees control their data. Employers see only aggregate trends — never individual finances.',
+                title: 'Private by design',
+                desc: 'Budget and goal entries belong to the employee. Employers see only anonymous, aggregate usage trends.',
               },
               {
                 icon: (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5v6m0 4h.01" />
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
                   </svg>
                 ),
-                title: 'AI that actually helps',
-                desc: 'Personalized guidance based on each employee\'s real financial situation — not generic advice.',
+                title: 'Entered by you',
+                desc: 'You type in your own income, categories and goal progress. Nothing is pulled in from outside accounts.',
               },
               {
                 icon: (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-                    <polyline points="16 7 22 7 22 13" />
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
                   </svg>
                 ),
-                title: 'Built for every employee',
-                desc: 'From entry-level to executive — Balance Path meets employees where they are, at every income and life stage.',
+                title: 'A simple monthly routine',
+                desc: 'Plan at the start of the month, update as you go and review at the end, whatever your pay schedule.',
               },
             ].map((pillar, i) => (
               <div key={i} className="flex items-start gap-4">
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(245,243,235,0.1)', color: 'rgba(245,243,235,0.7)' }}
+                  style={{ background: 'rgba(240,248,250,0.1)', color: 'rgba(240,248,250,0.9)' }}
                 >
                   {pillar.icon}
                 </div>
                 <div>
-                  <p style={{ color: 'var(--ivory)', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.35rem' }}>
+                  <p style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.35rem' }}>
                     {pillar.title}
                   </p>
-                  <p style={{ color: 'rgba(245,243,235,0.5)', fontSize: '0.82rem', lineHeight: 1.6 }}>
+                  <p style={{ color: 'rgba(240,248,250,0.75)', fontSize: '0.82rem', lineHeight: 1.6 }}>
                     {pillar.desc}
                   </p>
                 </div>
@@ -400,50 +335,57 @@ export default function HomePage() {
       <section className="py-28 px-6" style={{ background: 'var(--ivory)' }}>
         <div className="max-w-3xl mx-auto text-center">
           <p className="font-mono-label mb-8" style={{ color: 'var(--olive)', fontSize: '0.65rem' }}>
-            Why Balance Path
+            About Balanced Pathway
           </p>
           <h2 className="headline-lg mb-8" style={{ color: 'var(--forest)' }}>
-            <em className="italic-accent">Why</em> employers choose
+            One calm place
             <br />
-            Balance Path
+            <em className="italic-accent">for the month ahead.</em>
           </h2>
-          <p style={{ color: 'rgba(24,37,27,0.6)', fontSize: '1.05rem', lineHeight: 1.8, maxWidth: '520px', margin: '0 auto' }}>
-            Trusted by forward-thinking companies to deliver personalized financial guidance that helps employees achieve their unique financial goals.
+          <p style={{ color: 'rgba(15,37,53,0.75)', fontSize: '1.05rem', lineHeight: 1.8, maxWidth: '540px', margin: '0 auto 2rem' }}>
+            Many people keep their budget in their head or scattered across notes. Balanced Pathway gives employees a tidy, private workspace to plan their spending and keep their goals in view.
+          </p>
+          <p
+            className="rounded-xl p-4"
+            style={{
+              color: 'rgba(15,37,53,0.8)',
+              fontSize: '0.85rem',
+              lineHeight: 1.7,
+              maxWidth: '540px',
+              margin: '0 auto',
+              background: 'rgba(26,122,138,0.08)',
+              border: '1px solid rgba(26,122,138,0.2)',
+            }}
+          >
+            {SOFTWARE_NOTICE}
           </p>
         </div>
       </section>
 
-      {/* ── FEATURES (Origin-inspired) ── */}
+      {/* ── FEATURES ── */}
       <section className="pb-28 px-6" style={{ background: 'var(--ivory)' }}>
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
-                label: 'One Platform for Every Employee',
-                body: 'Support every financial journey—budgeting, investing, planning, and more—with a single, unified platform. Balance Path meets employees where they are, no matter their income, location, or life stage.',
+                label: 'A Budget You Build',
+                body: 'Enter your income, add the spending categories that fit your life and give each one a monthly plan. Change it whenever your month changes.',
               },
               {
-                label: 'Global Access and Equity',
-                body: 'Offer financial support that scales. Balance Path is built to serve teams in 70+ countries and 80+ languages, with culturally relevant guidance and localized experiences for true financial equity.',
+                label: 'Goals You Name',
+                body: 'Set a goal such as a vacation fund, a down payment or paying off a balance, then update your own numbers to see how far along you are.',
               },
               {
-                label: 'Flexible Pricing, Proven ROI',
-                body: 'Get financial wellness that works—and works for your budget. Our pricing model scales with your team, delivering up to $2.39 in ROI for every $1 invested.',
+                label: 'Gentle Reminders',
+                body: 'Get a nudge to review your budget and update your goal progress, by text if you opt in, or on your calendar with an export.',
               },
               {
-                label: 'Dedicated Success Team',
-                body: 'From onboarding to rollout to engagement campaigns, our customer success team is with you every step of the way—ensuring your program drives real adoption and impact.',
+                label: 'A Monthly Look Back',
+                body: 'At month end, see your planned amounts next to what you actually entered, category by category, in one simple review.',
               },
             ].map((f, i) => (
-              <div
-                key={i}
-                className="card-feature p-8"
-                style={{ minHeight: '280px' }}
-              >
-                <p
-                  className="font-mono-label mb-6"
-                  style={{ color: 'var(--olive)', fontSize: '0.6rem', lineHeight: 1.5 }}
-                >
+              <div key={i} className="card-feature p-8" style={{ minHeight: '280px' }}>
+                <p className="font-mono-label mb-6" style={{ color: 'var(--olive)', fontSize: '0.6rem', lineHeight: 1.5 }}>
                   {f.label}
                 </p>
                 <p style={{ color: 'var(--charcoal)', fontSize: '0.95rem', lineHeight: 1.75 }}>
@@ -463,9 +405,9 @@ export default function HomePage() {
               How It Works
             </p>
             <h2 className="headline-lg" style={{ color: 'var(--forest)' }}>
-              Your employees&apos; financial lives,
+              Four steps,
               <br />
-              <em className="italic-accent">finally supported.</em>
+              <em className="italic-accent">repeated each month.</em>
             </h2>
           </div>
 
@@ -473,30 +415,23 @@ export default function HomePage() {
             {[
               {
                 num: '01',
-                title: 'Connect',
-                desc: 'Employees securely link their financial accounts — bank, investments, loans — in minutes. They control exactly what they share.',
+                title: 'Set Up',
+                desc: 'Enter your monthly income and choose the spending categories that match how you live.',
                 icon: (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    <line x1="4" y1="6" x2="20" y2="6" />
+                    <line x1="4" y1="12" x2="20" y2="12" />
+                    <line x1="4" y1="18" x2="20" y2="18" />
+                    <circle cx="9" cy="6" r="2" fill="currentColor" />
+                    <circle cx="15" cy="12" r="2" fill="currentColor" />
+                    <circle cx="8" cy="18" r="2" fill="currentColor" />
                   </svg>
                 ),
               },
               {
                 num: '02',
-                title: 'Understand',
-                desc: 'Balance AI analyzes spending patterns, debt, savings gaps, and opportunities — giving each employee a clear picture of where they stand.',
-                icon: (
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
-                  </svg>
-                ),
-              },
-              {
-                num: '03',
                 title: 'Plan',
-                desc: 'The AI builds personalized financial plans — emergency funds, debt payoff, retirement, home buying — tailored to each employee\'s goals.',
+                desc: 'Build your monthly budget by giving each category an amount, and add any goals you want to work toward.',
                 icon: (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M9 11l3 3L22 4" />
@@ -505,9 +440,20 @@ export default function HomePage() {
                 ),
               },
               {
+                num: '03',
+                title: 'Track',
+                desc: 'As the month goes on, update your spending and your goal progress with your own numbers.',
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                  </svg>
+                ),
+              },
+              {
                 num: '04',
-                title: 'Grow',
-                desc: 'Employees track progress, ask questions anytime, and build lasting financial habits — while employers see aggregate wellness metrics.',
+                title: 'Review',
+                desc: 'Open your monthly budget review to compare planned and actual, then adjust for next month.',
                 icon: (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
@@ -519,28 +465,22 @@ export default function HomePage() {
               <div key={step.num} className="relative">
                 <div
                   className="w-10 h-10 rounded-2xl flex items-center justify-center mb-5"
-                  style={{ background: 'rgba(24,37,27,0.08)', color: 'var(--forest)' }}
+                  style={{ background: 'rgba(15,37,53,0.08)', color: 'var(--forest)' }}
                 >
                   {step.icon}
                 </div>
-                <p
-                  className="font-mono-label mb-3"
-                  style={{ color: 'rgba(24,37,27,0.25)', fontSize: '0.65rem' }}
-                >
+                <p className="font-mono-label mb-3" style={{ color: 'rgba(15,37,53,0.55)', fontSize: '0.65rem' }}>
                   {step.num}
                 </p>
-                <h3
-                  className="font-serif mb-3"
-                  style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--forest)' }}
-                >
+                <h3 className="font-serif mb-3" style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--forest)' }}>
                   {step.title}
                 </h3>
-                <p style={{ color: 'rgba(24,37,27,0.6)', fontSize: '0.88rem', lineHeight: 1.7 }}>
+                <p style={{ color: 'rgba(15,37,53,0.75)', fontSize: '0.88rem', lineHeight: 1.7 }}>
                   {step.desc}
                 </p>
                 {i < 3 && (
                   <div className="hidden md:block absolute top-5 -right-3 z-10">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(24,37,27,0.2)" strokeWidth="1.5">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(15,37,53,0.3)" strokeWidth="1.5">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </div>
@@ -556,63 +496,54 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
             <p className="font-mono-label mb-6" style={{ color: 'var(--olive)', fontSize: '0.65rem' }}>
-              The Experience
+              A Look Inside
             </p>
             <h2 className="headline-lg" style={{ color: 'var(--forest)' }}>
-              A financial advisor
+              Your budget and goals,
               <br />
-              <em className="italic-accent">in every pocket.</em>
+              <em className="italic-accent">side by side.</em>
             </h2>
             <p
               style={{
-                color: 'rgba(24,37,27,0.55)',
+                color: 'rgba(15,37,53,0.7)',
                 fontSize: '1rem',
                 lineHeight: 1.8,
-                maxWidth: '440px',
+                maxWidth: '460px',
                 margin: '1.5rem auto 0',
               }}
             >
-              Employees get a personalized dashboard and an AI they can ask anything — anytime.
+              Sample screens with sample entries, to show how the pieces fit together.
             </p>
           </div>
 
-          {/* Two-column UI demo */}
           <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Left: Dashboard */}
             <div>
               <p className="font-mono-label mb-4" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>
-                Financial Dashboard
+                Budget Builder
               </p>
-              <p
-                className="headline-md mb-6"
-                style={{ color: 'var(--forest)', fontSize: '1.5rem' }}
-              >
-                A clear view of every financial goal
+              <p className="headline-md mb-6" style={{ color: 'var(--forest)', fontSize: '1.5rem' }}>
+                See planned and spent together
               </p>
-              <p style={{ color: 'rgba(24,37,27,0.55)', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '2rem' }}>
-                Employees see their net worth, savings progress, debt payoff timeline, and AI-generated insights — all in one calm, organized view.
+              <p style={{ color: 'rgba(15,37,53,0.7)', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '2rem' }}>
+                Every category shows what you planned next to what you have entered so far, so the month is easy to read at a glance.
               </p>
               <div className="animate-float">
-                <DashboardMockup />
+                <BudgetMockup />
               </div>
             </div>
 
-            {/* Right: AI Chat */}
             <div>
               <p className="font-mono-label mb-4" style={{ color: 'var(--olive)', fontSize: '0.6rem' }}>
-                AI Financial Advisor
+                Goal Tracker
               </p>
-              <p
-                className="headline-md mb-6"
-                style={{ color: 'var(--forest)', fontSize: '1.5rem' }}
-              >
-                Ask anything. Get real answers.
+              <p className="headline-md mb-6" style={{ color: 'var(--forest)', fontSize: '1.5rem' }}>
+                Keep every goal in view
               </p>
-              <p style={{ color: 'rgba(24,37,27,0.55)', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '2rem' }}>
-                Balance AI understands each employee&apos;s unique financial situation and gives personalized, actionable guidance — not generic advice.
+              <p style={{ color: 'rgba(15,37,53,0.7)', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '2rem' }}>
+                Name a goal, set a target and update your progress whenever you like. The bar moves with the numbers you enter.
               </p>
               <div className="animate-float-delay">
-                <ChatMockup />
+                <GoalMockup />
               </div>
             </div>
           </div>
@@ -624,35 +555,35 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="font-mono-label mb-6" style={{ color: 'rgba(245,243,235,0.4)', fontSize: '0.65rem' }}>
+              <p className="font-mono-label mb-6" style={{ color: 'rgba(240,248,250,0.75)', fontSize: '0.65rem' }}>
                 For Employers
               </p>
               <h2 className="headline-lg text-white mb-6">
-                Personalized guidance at scale.
+                A budgeting benefit
                 <br />
-                <em className="italic-accent">Without more overhead.</em>
+                <em className="italic-accent">for the whole workforce.</em>
               </h2>
-              <p style={{ color: 'rgba(245,243,235,0.65)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '2.5rem' }}>
-                Launch a financial wellness benefit your employees will actually use. Balance Path handles everything — from onboarding to engagement — while you see aggregate impact metrics.
+              <p style={{ color: 'rgba(240,248,250,0.8)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '2.5rem' }}>
+                Offer every employee a private place to plan their month. You invite your team, and Balanced Pathway handles the rest.
               </p>
               <div className="space-y-5">
                 {[
-                  { title: 'Simple rollout', desc: 'Deploy to your entire workforce in days, not months.' },
-                  { title: 'Privacy by design', desc: 'Employers see aggregate data only. Individual finances stay private.' },
-                  { title: 'Measurable ROI', desc: 'Track engagement, satisfaction, and financial health improvements.' },
+                  { title: 'Simple rollout', desc: 'Verify eligibility and send invitations from your HR system.' },
+                  { title: 'Private by design', desc: 'Individual budgets and goals are never visible to employers.' },
+                  { title: 'Anonymous usage trends', desc: 'See aggregate usage only, never anything about one person.' },
                 ].map(item => (
                   <div key={item.title} className="flex items-start gap-4">
                     <div
                       className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                      style={{ background: 'rgba(245,243,235,0.15)', border: '1px solid rgba(245,243,235,0.2)' }}
+                      style={{ background: 'rgba(240,248,250,0.15)', border: '1px solid rgba(240,248,250,0.3)' }}
                     >
                       <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
                         <path d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
                     <div>
-                      <p style={{ color: 'var(--ivory)', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' }}>{item.title}</p>
-                      <p style={{ color: 'rgba(245,243,235,0.55)', fontSize: '0.85rem' }}>{item.desc}</p>
+                      <p style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' }}>{item.title}</p>
+                      <p style={{ color: 'rgba(240,248,250,0.75)', fontSize: '0.85rem' }}>{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -667,62 +598,48 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Employer dashboard mockup */}
             <div>
               <div
                 className="rounded-2xl p-6"
                 style={{
-                  background: 'rgba(245,243,235,0.06)',
-                  border: '1px solid rgba(245,243,235,0.1)',
+                  background: 'rgba(240,248,250,0.06)',
+                  border: '1px solid rgba(240,248,250,0.15)',
                 }}
               >
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <p className="font-mono-label" style={{ color: 'rgba(245,243,235,0.4)', fontSize: '0.6rem' }}>
-                      Employer Dashboard
-                    </p>
-                    <p style={{ color: 'var(--ivory)', fontWeight: 600, marginTop: '0.25rem' }}>Q3 Wellness Overview</p>
-                  </div>
-                  <div
-                    className="px-3 py-1 rounded-full font-mono-label"
-                    style={{ background: 'rgba(126,200,160,0.2)', color: '#7EC8A0', fontSize: '0.6rem' }}
-                  >
-                    Live
-                  </div>
+                <div className="mb-6">
+                  <p className="font-mono-label" style={{ color: 'rgba(240,248,250,0.75)', fontSize: '0.6rem' }}>
+                    Employer View
+                  </p>
+                  <p style={{ color: '#FFFFFF', fontWeight: 600, marginTop: '0.25rem' }}>Anonymous, aggregate only</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="space-y-3 mb-6">
                   {[
-                    { label: 'Active Employees', value: '847', change: '+12%' },
-                    { label: 'Avg. Financial Score', value: '72', change: '+8 pts' },
-                    { label: 'Goals Set', value: '2,341', change: 'this quarter' },
-                    { label: 'Program Engagement', value: '91%', change: '+5%' },
-                  ].map(stat => (
+                    { label: 'Employees enrolled', value: 'Aggregate count' },
+                    { label: 'Budgets started', value: 'Aggregate trend' },
+                    { label: 'Goals created', value: 'Aggregate trend' },
+                    { label: 'Individual budgets and goals', value: 'Not visible' },
+                  ].map(row => (
                     <div
-                      key={stat.label}
-                      className="rounded-xl p-4"
-                      style={{ background: 'rgba(245,243,235,0.05)' }}
+                      key={row.label}
+                      className="rounded-xl p-4 flex items-center justify-between gap-3"
+                      style={{ background: 'rgba(240,248,250,0.07)' }}
                     >
-                      <p className="font-mono-label mb-2" style={{ color: 'rgba(245,243,235,0.35)', fontSize: '0.55rem' }}>
-                        {stat.label}
-                      </p>
-                      <p style={{ color: 'var(--ivory)', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
-                        {stat.value}
-                      </p>
-                      <p style={{ color: '#7EC8A0', fontSize: '0.72rem', marginTop: '0.2rem' }}>{stat.change}</p>
+                      <p style={{ color: '#FFFFFF', fontSize: '0.85rem' }}>{row.label}</p>
+                      <p className="font-mono-label" style={{ color: '#4BBFD4', fontSize: '0.6rem' }}>{row.value}</p>
                     </div>
                   ))}
                 </div>
 
                 <div
                   className="rounded-xl p-4 flex items-start gap-3"
-                  style={{ background: 'rgba(126,200,160,0.1)', border: '1px solid rgba(126,200,160,0.2)' }}
+                  style={{ background: 'rgba(75,191,212,0.1)', border: '1px solid rgba(75,191,212,0.3)' }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7EC8A0" strokeWidth="2" className="flex-shrink-0 mt-0.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4BBFD4" strokeWidth="2" className="flex-shrink-0 mt-0.5">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                   </svg>
-                  <p style={{ color: 'rgba(245,243,235,0.7)', fontSize: '0.75rem', lineHeight: 1.5 }}>
-                    <strong style={{ color: 'var(--ivory)' }}>Privacy protected:</strong> Employers see aggregate wellness trends — never individual financial data.
+                  <p style={{ color: 'rgba(240,248,250,0.85)', fontSize: '0.75rem', lineHeight: 1.5 }}>
+                    <strong style={{ color: '#FFFFFF' }}>Privacy protected:</strong> Employers see anonymous usage trends, never individual budgets or goals.
                   </p>
                 </div>
               </div>
@@ -738,30 +655,30 @@ export default function HomePage() {
             Get Started
           </p>
           <h2 className="headline-lg mb-8" style={{ color: 'var(--forest)' }}>
-            Give your employees
+            A simple place
             <br />
-            <em className="italic-accent">a path to financial success.</em>
+            <em className="italic-accent">to plan your month.</em>
           </h2>
           <p
             style={{
-              color: 'rgba(24,37,27,0.55)',
+              color: 'rgba(15,37,53,0.7)',
               fontSize: '1rem',
               lineHeight: 1.8,
-              maxWidth: '420px',
+              maxWidth: '440px',
               margin: '0 auto 2.5rem',
             }}
           >
-            Join companies building financially secure, confident, and resilient workforces with Balance Path.
+            Employees can sign up with the Employer ID from their onboarding email. Employers can talk with us about offering Balanced Pathway.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="/talk-to-sales" className="btn-forest">
-              Get Started
+            <Link href="/signup" className="btn-forest">
+              Employee Sign Up
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </Link>
-            <Link href="/for-employers" className="btn-outline" style={{ color: 'var(--forest)', borderColor: 'rgba(24,37,27,0.3)' }}>
-              For Employers
+            <Link href="/talk-to-sales" className="btn-outline" style={{ color: 'var(--forest)', borderColor: 'rgba(15,37,53,0.35)' }}>
+              Talk to Sales
             </Link>
           </div>
         </div>
